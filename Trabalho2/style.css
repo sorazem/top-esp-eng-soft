@@ -1,0 +1,35 @@
+.circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  float: left;
+  margin: 0 8px 50px 32px;
+}
+
+#btn {
+  display: block;
+  margin: 32px auto;
+  width: 120px;
+  height: 48px;
+  background-color: #e60073;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#red {
+  background-color: #ff1a1a;
+}
+
+#blue {
+  background-color: #1aa3ff;
+}
+
+#yellow {
+  background-color: #ffff33;
+}
+
+#green {
+  background-color: #47d147;
+}

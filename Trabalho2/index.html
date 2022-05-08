@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="style.css" />
+    <title>Circles!</title>
+  </head>
+  <body>
+  </body>
+  <script type="text/javascript">
+    const colors = ["blue","yellow","red","green"];
+
+    const btn = document.createElement("button");
+    btn.innerHTML = "Add circle";
+    btn.setAttribute("id", "btn");
+    document.body.appendChild(btn);
+
+    btn.onclick = function(){
+      createCircle();
+    }
+
+    function createCircle(){
+      let el = document.createElement("div");
+      el.classList.add("circle");
+      let circles = document.getElementsByClassName("circle");
+      if (circles.length == 0){
+        el.setAttribute("id", "blue");
+      } else{
+        el.setAttribute("id", colors[(colors.findIndex(x => x === circles[circles.length-1].id)+1) % colors.length]);
+      }
+      el.onclick = function(){
+        el.parentNode.removeChild(el);
+      }
+      document.body.appendChild(el);
+    }
+
+
+    for (let i = 0; i < colors.length; i++) {
+      createCircle();
+    }
+
+  </script>
+</html>

@@ -1,0 +1,45 @@
+body{
+  margin: 0;
+  padding: 2em 1em;
+  font-family: 'Akshar', sans-serif;
+}
+
+h1{
+  text-align: center;
+  font-size: 3em;
+}
+
+span{
+  font-style: italic;
+}
+
+img{
+  width: 45vw;
+  height: auto;
+}
+
+table{
+  border-spacing: 10px;
+  width: 400px;
+}
+
+td, th{
+  text-align: left;
+  padding: 2px;
+}
+
+#description{
+  width: 45vw;
+  text-align: justify;
+  line-height: 1.5em;
+}
+
+#description::first-letter{
+  font-size: 2em;
+  font-weight: bold;
+  color: red;
+}
+
+.right{
+  float: right;
+}
