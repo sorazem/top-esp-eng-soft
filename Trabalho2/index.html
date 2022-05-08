@@ -5,11 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="style.css" />
     <title>Circles!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
   </head>
   <body>
   </body>
   <script type="text/javascript">
-    const colors = ["blue","yellow","red","green"];
+    const colors = ["blue","yellow","green","red"];
+
+    const p = document.createElement("p");
+    const text = document.createTextNode("You have two jobs: create and delete circles as much as you want to! To create a circle, click on the button below. To make a circle disappear, simply click it with your cursor :)");
+    p.appendChild(text);
+    document.body.appendChild(p);
 
     const btn = document.createElement("button");
     btn.innerHTML = "Add circle";
