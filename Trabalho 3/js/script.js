@@ -1,17 +1,27 @@
+/** @constant {element} */
 const rVotoPara = document.querySelector('.esquerda .rotulo.r1 span')
+/** @constant {element} */
 const rCargo = document.querySelector('.esquerda .rotulo.r2 span')
+/** @constant {element} */
 const numeros = document.querySelector('.esquerda .rotulo.r3')
+/** @constant {element} */
 const rDescricao = document.querySelector('.esquerda .rotulo.r4')
+/** @constant {element} */
 const rMensagem = document.querySelector('.esquerda .rotulo.r4 .mensagem')
+/** @constant {element} */
 const rNomeCandidato = document.querySelector('.esquerda .rotulo.r4 .nome-candidato')
+/** @constant {element} */
 const rPartidoPolitico = document.querySelector('.esquerda .rotulo.r4 .partido-politico')
+/** @constant {element} */
 const rNomeVice = document.querySelector('.esquerda .rotulo.r4 .nome-vice')
+/** @constant {element} */
 const rRodape = document.querySelector('.tela .rodape')
 
+/** @constant {element} */
 const rCandidato = document.querySelector('.direita .candidato')
-const rVice = document.querySelector('.direita .candidato.menor')
 
-const votos = []
+/** @constant {element} */
+const rVice = document.querySelector('.direita .candidato.menor')
 
 var etapaAtual = 0
 var etapas = null
@@ -131,6 +141,7 @@ function atualizarInterface() {
 
 /**
  * Verifica se pode usar o teclado e atualiza o número.
+ * @param {string} value
  */
 function clicar(value) {
   console.log(value)
@@ -164,13 +175,6 @@ function branco() {
   if (! numeroDigitado) {
     votoEmBranco = true
 
-    ajax('https://trabalho-eng-soft.herokuapp.com/api/votar', 'POST', (response) => {
-        etapas = JSON.parse(response)
-        console.log(etapas)
-
-        comecarEtapa()
-      }, {cargo: etapa['titulo'], num: etapa['titulo'] == 'prefeito' ? 'xx' : 'xxxxx'})
-
     numeros.style.display = 'none'
     rVotoPara.style.display = 'inline'
     rDescricao.style.display = 'block'
@@ -202,11 +206,6 @@ function confirmar() {
   if (numeroDigitado.length == etapa['numeros']) {
     if (etapa['candidatos'][numeroDigitado]) {
       // Votou em candidato
-      votos.push({
-        'etapa': etapa['titulo'],
-        'numero': numeroDigitado
-      })
-
       ajax('https://trabalho-eng-soft.herokuapp.com/api/votar', 'POST', (response) => {
         etapas = JSON.parse(response)
         console.log(etapas)
@@ -217,19 +216,17 @@ function confirmar() {
       console.log(`Votou em ${numeroDigitado}`)
     } else {
       // Votou nulo
-      votos.push({
-        'etapa': etapa['titulo'],
-        'numero': null
-      })
       console.log('Votou Nulo')
     }
   } else if (votoEmBranco) {
     // Votou em branco
-      votos.push({
-        'etapa': etapa['titulo'],
-        'numero': ''
-      })
-      //ajax pra votar em branco
+      ajax('https://trabalho-eng-soft.herokuapp.com/api/votar', 'POST', (response) => {
+        etapas = JSON.parse(response)
+        console.log(etapas)
+
+        comecarEtapa()
+      }, {cargo: etapa['titulo'], num: etapa['titulo'] == 'prefeito' ? 'xx' : 'xxxxx'})
+
       console.log('Votou em Branco')
   } else {
     // Voto não pode ser confirmado
