@@ -1,4 +1,4 @@
-function ajax(url, method, callback, body) {
+function ajax(url, method, callback, body={}) {
   let request = new XMLHttpRequest();
   request.overrideMimeType("application/json");
   request.open(method, url, true);
