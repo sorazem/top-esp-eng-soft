@@ -207,9 +207,6 @@ function confirmar() {
     if (etapa['candidatos'][numeroDigitado]) {
       // Votou em candidato
       ajax('https://trabalho-eng-soft.herokuapp.com/api/votar', 'POST', (response) => {
-        etapas = JSON.parse(response)
-        console.log(etapas)
-
         comecarEtapa()
       }, {cargo: etapa['titulo'], num: etapa['candidatos'][numeroDigitado]})
 
@@ -221,9 +218,6 @@ function confirmar() {
   } else if (votoEmBranco) {
     // Votou em branco
       ajax('https://trabalho-eng-soft.herokuapp.com/api/votar', 'POST', (response) => {
-        etapas = JSON.parse(response)
-        console.log(etapas)
-
         comecarEtapa()
       }, {cargo: etapa['titulo'], num: etapa['titulo'] == 'prefeito' ? 'xx' : 'xxxxx'})
 
