@@ -46,6 +46,7 @@ window.onload = () => {
   document.querySelector('.teclado--botao.branco').onclick = () => branco()
   document.querySelector('.teclado--botao.laranja').onclick = () => corrigir()
   document.querySelector('.teclado--botao.verde').onclick = () => confirmar()
+  document.querySelector('#resultado').onclick = () => mostrarResultado()
 }
 
 /**
@@ -213,6 +214,9 @@ function confirmar() {
       console.log(`Votou em ${numeroDigitado}`)
     } else {
       // Votou nulo
+      ajax('https://trabalho-eng-soft.herokuapp.com/api/votar', 'POST', (response) => {
+        comecarEtapa()
+      }, {cargo: etapa['titulo'], num: numeroDigitado})
       console.log('Votou Nulo')
     }
   } else if (votoEmBranco) {
@@ -238,4 +242,68 @@ function confirmar() {
 
   (new Audio('audio/se3.mp3')).play()
   comecarEtapa()
+}
+
+function mostrarResultado(){
+  document.getElementById("resultado").style = "display:none;"
+  ajax('https://trabalho-eng-soft.herokuapp.com/api/resultado', 'GET', (response) => {
+    response = JSON.parse(response)
+    console.log(response["prefeito"])
+    let tabelas = [response["prefeito"], response["vereador"]];
+    
+
+    tabelas.forEach( (tabela)=>{
+
+      let titulo;
+      let table = document.createElement('table');
+      let thead = document.createElement('thead');
+      let tbody = document.createElement('tbody');
+
+      table.appendChild(thead);
+      table.appendChild(tbody);
+
+      // Adding the entire table to the body tag
+      if(tabela == response["prefeito"]){
+        titulo = document.createElement("h4");
+        titulo.textContent = "Prefeito";
+        document.getElementById('tabelaResultadoPrefeito').appendChild(titulo);
+        titulo.appendChild(table);
+      } else{
+        titulo = document.createElement("h4");
+        titulo.textContent = "Vereador";
+        document.getElementById('tabelaResultadoVereador').appendChild(titulo);
+        titulo.appendChild(table);
+      }
+      
+
+      let row_1 = document.createElement('tr');
+      let heading_1 = document.createElement('th');
+      heading_1.innerHTML = "Candidato";
+      let heading_2 = document.createElement('th');
+      heading_2.innerHTML = "Partido";
+      let heading_3 = document.createElement('th');
+      heading_3.innerHTML = "Votos";
+
+      row_1.appendChild(heading_1);
+      row_1.appendChild(heading_2);
+      row_1.appendChild(heading_3);
+      thead.appendChild(row_1);
+
+      tabela.forEach( (item) =>{
+        let row_2 = document.createElement('tr');
+        let row_2_data_1 = document.createElement('td');
+        row_2_data_1.innerHTML = item.nome;
+        let row_2_data_2 = document.createElement('td');
+        row_2_data_2.innerHTML = item.partido;
+        let row_2_data_3 = document.createElement('td');
+        row_2_data_3.innerHTML = item.votos;
+
+        row_2.appendChild(row_2_data_1);
+        row_2.appendChild(row_2_data_2);
+        row_2.appendChild(row_2_data_3);
+        tbody.appendChild(row_2);
+      })
+    });
+    
+  })
 }
