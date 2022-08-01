@@ -142,7 +142,7 @@ function atualizarInterface() {
 
 /**
  * Verifica se pode usar o teclado e atualiza o número.
- * @param {string} value
+ * @param {element} value - Elemento do teclado da urna.
  */
 function clicar(value) {
   console.log(value)
@@ -244,6 +244,9 @@ function confirmar() {
   comecarEtapa()
 }
 
+/**
+ * Cria tabela com os votos da eleição.
+ */
 function mostrarResultado(){
   document.getElementById("resultado").style = "display:none;"
   ajax('https://trabalho-eng-soft.herokuapp.com/api/resultado', 'GET', (response) => {

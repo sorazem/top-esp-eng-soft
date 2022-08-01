@@ -74,6 +74,7 @@ window.onload = () => {
   document.querySelector('.teclado--botao.branco').onclick = () => branco()
   document.querySelector('.teclado--botao.laranja').onclick = () => corrigir()
   document.querySelector('.teclado--botao.verde').onclick = () => confirmar()
+  document.querySelector('#resultado').onclick = () => mostrarResultado()
 }
 
 /**
@@ -169,7 +170,7 @@ function atualizarInterface() {
 
 /**
  * Verifica se pode usar o teclado e atualiza o número.
- * @param {string} value
+ * @param {element} value - Elemento do teclado da urna.
  */
 function clicar(value) {
   console.log(value)
@@ -236,11 +237,14 @@ function confirmar() {
       // Votou em candidato
       ajax('https://trabalho-eng-soft.herokuapp.com/api/votar', 'POST', (response) => {
         comecarEtapa()
-      }, {cargo: etapa['titulo'], num: etapa['candidatos'][numeroDigitado]})
+      }, {cargo: etapa['titulo'], num: numeroDigitado})
 
       console.log(`Votou em ${numeroDigitado}`)
     } else {
       // Votou nulo
+      ajax('https://trabalho-eng-soft.herokuapp.com/api/votar', 'POST', (response) => {
+        comecarEtapa()
+      }, {cargo: etapa['titulo'], num: numeroDigitado})
       console.log('Votou Nulo')
     }
   } else if (votoEmBranco) {
@@ -266,6 +270,73 @@ function confirmar() {
 
   (new Audio('audio/se3.mp3')).play()
   comecarEtapa()
+}
+
+/**
+ * Cria tabela com os votos da eleição.
+ */
+function mostrarResultado(){
+  document.getElementById("resultado").style = "display:none;"
+  ajax('https://trabalho-eng-soft.herokuapp.com/api/resultado', 'GET', (response) => {
+    response = JSON.parse(response)
+    console.log(response["prefeito"])
+    let tabelas = [response["prefeito"], response["vereador"]];
+    
+
+    tabelas.forEach( (tabela)=>{
+
+      let titulo;
+      let table = document.createElement('table');
+      let thead = document.createElement('thead');
+      let tbody = document.createElement('tbody');
+
+      table.appendChild(thead);
+      table.appendChild(tbody);
+
+      // Adding the entire table to the body tag
+      if(tabela == response["prefeito"]){
+        titulo = document.createElement("h4");
+        titulo.textContent = "Prefeito";
+        document.getElementById('tabelaResultadoPrefeito').appendChild(titulo);
+        titulo.appendChild(table);
+      } else{
+        titulo = document.createElement("h4");
+        titulo.textContent = "Vereador";
+        document.getElementById('tabelaResultadoVereador').appendChild(titulo);
+        titulo.appendChild(table);
+      }
+      
+
+      let row_1 = document.createElement('tr');
+      let heading_1 = document.createElement('th');
+      heading_1.innerHTML = "Candidato";
+      let heading_2 = document.createElement('th');
+      heading_2.innerHTML = "Partido";
+      let heading_3 = document.createElement('th');
+      heading_3.innerHTML = "Votos";
+
+      row_1.appendChild(heading_1);
+      row_1.appendChild(heading_2);
+      row_1.appendChild(heading_3);
+      thead.appendChild(row_1);
+
+      tabela.forEach( (item) =>{
+        let row_2 = document.createElement('tr');
+        let row_2_data_1 = document.createElement('td');
+        row_2_data_1.innerHTML = item.nome;
+        let row_2_data_2 = document.createElement('td');
+        row_2_data_2.innerHTML = item.partido;
+        let row_2_data_3 = document.createElement('td');
+        row_2_data_3.innerHTML = item.votos;
+
+        row_2.appendChild(row_2_data_1);
+        row_2.appendChild(row_2_data_2);
+        row_2.appendChild(row_2_data_3);
+        tbody.appendChild(row_2);
+      })
+    });
+    
+  })
 }</code></pre>
         </article>
     </section>
@@ -276,13 +347,13 @@ function confirmar() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#atualizarInterface">atualizarInterface</a></li><li><a href="global.html#branco">branco</a></li><li><a href="global.html#clicar">clicar</a></li><li><a href="global.html#comecarEtapa">comecarEtapa</a></li><li><a href="global.html#confirmar">confirmar</a></li><li><a href="global.html#corrigir">corrigir</a></li><li><a href="global.html#numeros">numeros</a></li><li><a href="global.html#rCandidato">rCandidato</a></li><li><a href="global.html#rCargo">rCargo</a></li><li><a href="global.html#rDescricao">rDescricao</a></li><li><a href="global.html#rMensagem">rMensagem</a></li><li><a href="global.html#rNomeCandidato">rNomeCandidato</a></li><li><a href="global.html#rNomeVice">rNomeVice</a></li><li><a href="global.html#rPartidoPolitico">rPartidoPolitico</a></li><li><a href="global.html#rRodape">rRodape</a></li><li><a href="global.html#rVice">rVice</a></li><li><a href="global.html#rVotoPara">rVotoPara</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#atualizarInterface">atualizarInterface</a></li><li><a href="global.html#branco">branco</a></li><li><a href="global.html#clicar">clicar</a></li><li><a href="global.html#comecarEtapa">comecarEtapa</a></li><li><a href="global.html#confirmar">confirmar</a></li><li><a href="global.html#corrigir">corrigir</a></li><li><a href="global.html#mostrarResultado">mostrarResultado</a></li><li><a href="global.html#numeros">numeros</a></li><li><a href="global.html#rCandidato">rCandidato</a></li><li><a href="global.html#rCargo">rCargo</a></li><li><a href="global.html#rDescricao">rDescricao</a></li><li><a href="global.html#rMensagem">rMensagem</a></li><li><a href="global.html#rNomeCandidato">rNomeCandidato</a></li><li><a href="global.html#rNomeVice">rNomeVice</a></li><li><a href="global.html#rPartidoPolitico">rPartidoPolitico</a></li><li><a href="global.html#rRodape">rRodape</a></li><li><a href="global.html#rVice">rVice</a></li><li><a href="global.html#rVotoPara">rVotoPara</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Sun Jul 31 2022 21:12:35 GMT-0300 (Horário Padrão de Brasília)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Sun Jul 31 2022 22:50:16 GMT-0300 (Horário Padrão de Brasília)
 </footer>
 
 <script> prettyPrint(); </script>
